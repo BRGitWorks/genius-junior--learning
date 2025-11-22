@@ -32,6 +32,9 @@ jobs:
         run: npm install --legacy-peer-deps
         
       - name: Build
+        # Passes the API_KEY from Secrets to the Vite build process
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
         run: npm run build
         
       - name: Upload artifact
