@@ -1,9 +1,15 @@
 import { GoogleGenAI, Type, Schema, Modality } from "@google/genai";
 import { SubjectType, QuizQuestion, PathModule, DictationItem } from "../types";
 
-const apiKey = process.env.API_KEY;
-
-const ai = new GoogleGenAI({ apiKey: apiKey });
+// Helper to safely get the AI client only when needed
+const getAiClient = () => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    console.warn("API Key is missing. AI features will not work.");
+    return null;
+  }
+  return new GoogleGenAI({ apiKey });
+};
 
 export const generateExplanation = async (
   subject: SubjectType,
@@ -11,6 +17,9 @@ export const generateExplanation = async (
   age: number,
   history: string[]
 ): Promise<string> => {
+  const ai = getAiClient();
+  if (!ai) return "Please configure your API Key in the settings to use the AI tutor.";
+
   const modelId = 'gemini-2.5-flash';
   
   const prompt = `
@@ -42,6 +51,9 @@ export const generateQuiz = async (
   topic: string,
   age: number
 ): Promise<QuizQuestion[]> => {
+  const ai = getAiClient();
+  if (!ai) return [];
+
   const modelId = 'gemini-2.5-flash';
 
   const schema: Schema = {
@@ -87,6 +99,9 @@ export const generateQuiz = async (
 };
 
 export const suggestTopics = async (subject: SubjectType, age: number): Promise<string[]> => {
+  const ai = getAiClient();
+  if (!ai) return ["Basics", "Advanced", "Fun Facts", "History"];
+
   const modelId = 'gemini-2.5-flash';
   
   const schema: Schema = {
@@ -125,6 +140,9 @@ export const generateLearningPath = async (
   subject: SubjectType,
   age: number
 ): Promise<PathModule[]> => {
+  const ai = getAiClient();
+  if (!ai) return [];
+
   const modelId = 'gemini-2.5-flash';
 
   const schema: Schema = {
@@ -188,6 +206,9 @@ export const generateLearningPath = async (
 };
 
 export const generateDictationList = async (age: number, language: string = 'English'): Promise<DictationItem[]> => {
+  const ai = getAiClient();
+  if (!ai) return [];
+
   const modelId = 'gemini-2.5-flash';
   
   const schema: Schema = {
@@ -244,6 +265,9 @@ export const generateDictationList = async (age: number, language: string = 'Eng
 };
 
 export const generateSpeech = async (text: string, language: string = 'English'): Promise<string | undefined> => {
+  const ai = getAiClient();
+  if (!ai) return undefined;
+
   const modelId = 'gemini-2.5-flash-preview-tts';
 
   const promptText = language === 'English' 

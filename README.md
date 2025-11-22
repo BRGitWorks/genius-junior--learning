@@ -8,14 +8,14 @@ A personalized, AI-powered learning application covering Math, Science, Computer
 2. **Check Structure**: Make sure the `.github` folder is at the root.
    - Correct: `.github/workflows/deploy.yml`
    - Incorrect: `workflows/deploy.yml` or just `deploy.yml`
-3. **Enable Actions**:
-   - Go to **Settings** -> **Actions** -> **General**.
-   - Select **"Allow all actions and reusable workflows"**.
-   - Click **Save**.
+3. **Add API Key**:
+   - Go to **Settings** -> **Secrets and variables** -> **Actions**.
+   - Click **New repository secret**.
+   - Name: `API_KEY`
+   - Value: [Your Gemini API Key]
 4. **Watch Build**:
    - Click the **Actions** tab at the top of the repo.
    - You should see a workflow named "Deploy to GitHub Pages" running.
-   - If it's not running, you can click it and select "Run workflow" manually.
 5. **Enable Pages**:
    - Once the action is Green (Success).
    - Go to **Settings** -> **Pages**.
