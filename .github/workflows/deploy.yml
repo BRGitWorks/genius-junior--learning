@@ -27,7 +27,9 @@ jobs:
           node-version: "20"
           
       - name: Install dependencies
-        run: npm install
+        # Using npm install is safer than npm ci when package-lock.json might be missing
+        # --legacy-peer-deps helps avoid random conflict errors
+        run: npm install --legacy-peer-deps
         
       - name: Build
         run: npm run build
